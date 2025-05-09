@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Download Brochure</title>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-header">Download Brochure</div>
+        <form id="brochureForm" action="" method="POST">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required />
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required />
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required />
+            </div>
+            <button type="submit" class="submit-btn">Download Now</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("brochureForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const webhookUrl = "https://primary-production-c136.up.railway.app/webhook/2162d8a4-05cd-4cd8-9a45-6fd644985dca";
+            const formData = new FormData(e.target);
+            const data = {};
+
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Your brochure is on the way!");
+                e.target.reset();
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Something went wrong. Please try again.");
+            });
+        });
+    </script>
+</body>
+</html>
